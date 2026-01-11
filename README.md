@@ -58,4 +58,4 @@ Built with [maplibre-gl-lidar](https://github.com/opengeos/maplibre-gl-lidar) - 
 
 ## License
 
-MIT
+MIT License
