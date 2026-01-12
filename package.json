@@ -12,7 +12,8 @@
   "license": "MIT",
   "dependencies": {
     "maplibre-gl": "^5.14.0",
-    "maplibre-gl-lidar": "^0.4.0"
+    "maplibre-gl-lidar": "^0.4.0",
+    "maplibre-gl-layer-control": "^0.8.0"
   },
   "devDependencies": {
     "typescript": "^5.7.0",

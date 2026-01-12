@@ -1,8 +1,9 @@
 import maplibregl from 'maplibre-gl';
 import { LidarControl } from 'maplibre-gl-lidar';
+import { LayerControl } from 'maplibre-gl-layer-control';
 import 'maplibre-gl-lidar/style.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
-
+import 'maplibre-gl-layer-control/style.css';
 // DOM elements
 const urlFormContainer = document.getElementById('url-form-container') as HTMLDivElement;
 const urlForm = document.getElementById('url-form') as HTMLFormElement;
@@ -28,9 +29,10 @@ let lidarControl: LidarControl | null = null;
 function initMap(): maplibregl.Map {
   if (map) return map;
 
+  const BASEMAP_STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
   map = new maplibregl.Map({
     container: 'map',
-    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+    style: BASEMAP_STYLE,
     center: [0, 0],
     zoom: 2,
     pitch: 60,
@@ -41,6 +43,13 @@ function initMap(): maplibregl.Map {
   map.addControl(new maplibregl.FullscreenControl(), 'top-right');
   map.addControl(new maplibregl.GlobeControl(), 'top-right');
   map.addControl(new maplibregl.ScaleControl(), 'bottom-right');
+
+  // Add layer control for basemap layers
+  const layerControl = new LayerControl({
+    collapsed: true,
+    basemapStyleUrl: BASEMAP_STYLE,
+});
+  map.addControl(layerControl, 'top-right');
 
   return map;
 }
@@ -92,6 +101,29 @@ async function loadPointCloud(url: string): Promise<void> {
       await new Promise<void>((resolve) => {
         mapInstance.on('load', () => resolve());
       });
+
+        // Add Google Satellite basemap
+      mapInstance.addSource('google-satellite', {
+        type: 'raster',
+        tiles: ['https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'],
+        tileSize: 256,
+        attribution: '&copy; Google',
+      });
+
+      mapInstance.addLayer(
+        {
+          id: 'google-satellite',
+          type: 'raster',
+          source: 'google-satellite',
+          paint: {
+            'raster-opacity': 1,
+          },
+          layout: {
+            visibility: 'none', // Hidden by default
+          },
+        },
+      );
+
     }
 
     // Initialize LiDAR control if needed
