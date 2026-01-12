@@ -1,5 +1,5 @@
 import maplibregl from 'maplibre-gl';
-import { LidarControl } from 'maplibre-gl-lidar';
+import { LidarControl, LidarLayerAdapter } from 'maplibre-gl-lidar';
 import { LayerControl } from 'maplibre-gl-layer-control';
 import 'maplibre-gl-lidar/style.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -9,13 +9,11 @@ const urlFormContainer = document.getElementById('url-form-container') as HTMLDi
 const urlForm = document.getElementById('url-form') as HTMLFormElement;
 const urlInput = document.getElementById('url-input') as HTMLInputElement;
 const loadBtn = document.getElementById('load-btn') as HTMLButtonElement;
-const infoBox = document.getElementById('info-box') as HTMLDivElement;
-const urlDisplay = document.getElementById('url-display') as HTMLDivElement;
-const loadAnotherBtn = document.getElementById('load-another-btn') as HTMLButtonElement;
 const loadingIndicator = document.getElementById('loading-indicator') as HTMLDivElement;
 
 let map: maplibregl.Map | null = null;
 let lidarControl: LidarControl | null = null;
+let layerControl: LayerControl | null = null;
 
 /**
  * Initialize the MapLibre GL map instance.
@@ -42,13 +40,13 @@ function initMap(): maplibregl.Map {
   map.addControl(new maplibregl.NavigationControl(), 'top-right');
   map.addControl(new maplibregl.FullscreenControl(), 'top-right');
   map.addControl(new maplibregl.GlobeControl(), 'top-right');
-  map.addControl(new maplibregl.ScaleControl(), 'bottom-right');
+  map.addControl(new maplibregl.ScaleControl(), 'bottom-left');
 
   // Add layer control for basemap layers
-  const layerControl = new LayerControl({
+  layerControl = new LayerControl({
     collapsed: true,
     basemapStyleUrl: BASEMAP_STYLE,
-});
+  });
   map.addControl(layerControl, 'top-right');
 
   return map;
@@ -130,6 +128,12 @@ async function loadPointCloud(url: string): Promise<void> {
     const control = initLidarControl();
     if (!mapInstance.hasControl(control)) {
       mapInstance.addControl(control, 'top-right');
+
+      // Register LidarLayerAdapter with LayerControl
+      if (layerControl) {
+        const lidarAdapter = new LidarLayerAdapter(control);
+        layerControl.registerCustomAdapter(lidarAdapter);
+      }
     }
 
     // Clear existing point clouds
@@ -155,10 +159,8 @@ async function loadPointCloud(url: string): Promise<void> {
     const filename = url.split('/').pop() || 'Point Cloud';
     document.title = `${filename} - LiDAR Viewer`;
 
-    // Show map, hide form
+    // Hide form when point cloud is loaded
     urlFormContainer.style.display = 'none';
-    infoBox.style.display = 'block';
-    urlDisplay.textContent = url;
   } catch (err) {
     console.error('Failed to load point cloud:', err);
     const message = err instanceof Error ? err.message : 'Unknown error';
@@ -167,26 +169,6 @@ async function loadPointCloud(url: string): Promise<void> {
     loadingIndicator.style.display = 'none';
     loadBtn.disabled = false;
   }
-}
-
-/**
- * Show the URL input form and reset the UI to initial state.
- *
- * Hides the info box, displays the form, and removes the URL
- * parameter from the browser address bar.
- */
-function showForm(): void {
-  urlFormContainer.style.display = 'flex';
-  infoBox.style.display = 'none';
-  urlInput.focus();
-
-  // Update URL (remove query param)
-  const newUrl = new URL(window.location.href);
-  newUrl.searchParams.delete('url');
-  window.history.pushState({}, '', newUrl.toString());
-
-  // Reset title
-  document.title = 'LiDAR Point Cloud Viewer';
 }
 
 // Event listeners
@@ -208,9 +190,6 @@ document.querySelectorAll('.sample-urls button[data-url]').forEach((btn) => {
     }
   });
 });
-
-// Load another button
-loadAnotherBtn.addEventListener('click', showForm);
 
 // Check for URL parameter on page load
 const params = new URLSearchParams(window.location.search);
