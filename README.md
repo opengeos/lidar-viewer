@@ -54,7 +54,7 @@ npm run build
 
 ## Credits
 
-Built with [maplibre-gl-lidar](https://github.com/opengeos/maplibre-gl-lidar) - A MapLibre GL JS plugin for visualizing LiDAR point clouds using deck.gl.
+Built with [maplibre-gl-lidar](https://github.com/opengeos/maplibre-gl-lidar) - A MapLibre GL JS plugin for visualizing LiDAR point clouds using MapLibre GL and deck.gl.
 
 ## License
 
