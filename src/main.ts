@@ -80,10 +80,11 @@ function initLidarControl(): LidarControl {
  * Load a point cloud from the given URL.
  *
  * Initializes the map and LiDAR control if needed, loads the point cloud
- * data, and updates the UI accordingly.
+ * data, and updates the UI accordingly. Supports both COPC LAZ files and
+ * EPT (Entwine Point Tiles) datasets.
  *
  * Args:
- *     url: The URL of the COPC LAZ file to load.
+ *     url: The URL of the COPC LAZ file or EPT ept.json to load.
  */
 async function loadPointCloud(url: string): Promise<void> {
   // Show loading indicator
@@ -117,8 +118,9 @@ async function loadPointCloud(url: string): Promise<void> {
             'raster-opacity': 1,
           },
           layout: {
-            visibility: 'none', // Hidden by default
+            visibility: 'visible', // Visible by default
           },
+          minzoom: 16,
         },
       );
 
@@ -155,8 +157,13 @@ async function loadPointCloud(url: string): Promise<void> {
     newUrl.searchParams.set('url', url);
     window.history.pushState({}, '', newUrl.toString());
 
-    // Update page title
-    const filename = url.split('/').pop() || 'Point Cloud';
+    // Update page title (handle EPT URLs specially)
+    let filename = url.split('/').pop() || 'Point Cloud';
+    if (filename === 'ept.json') {
+      // For EPT URLs like .../dublin/ept.json, use the parent folder name
+      const parts = url.split('/');
+      filename = parts[parts.length - 2] || 'EPT Dataset';
+    }
     document.title = `${filename} - LiDAR Viewer`;
 
     // Hide form when point cloud is loaded

@@ -173,13 +173,13 @@
   <!-- URL Input Form -->
   <div id="url-form-container">
     <h1>LiDAR Point Cloud Viewer</h1>
-    <p class="subtitle">Enter a COPC LAZ file URL to visualize</p>
+    <p class="subtitle">Enter a COPC LAZ or EPT URL to visualize</p>
 
     <form id="url-form">
       <input
         type="url"
         id="url-input"
-        placeholder="https://example.com/pointcloud.copc.laz"
+        placeholder="https://example.com/pointcloud.copc.laz or ept.json"
         required
       >
       <button type="submit" id="load-btn">Load</button>
@@ -195,6 +195,9 @@
       </button>
       <button type="button" data-url="https://data.opengeos.org/USGS_LPC_TX_CoastalRegion_2018_A18_stratmap18-50cm-2995201a1.copc.laz">
         Texas Coastal Region
+      </button>
+      <button type="button" data-url="https://s3-us-west-2.amazonaws.com/usgs-lidar-public/AL_17Co_1_2020/ept.json">
+        Alabama USGS (EPT)
       </button>
     </div>
 
