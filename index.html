@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -164,11 +165,17 @@
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
+
 <body>
   <!-- URL Input Form -->
   <div id="url-form-container">
@@ -176,34 +183,38 @@
     <p class="subtitle">Enter a COPC LAZ or EPT URL to visualize</p>
 
     <form id="url-form">
-      <input
-        type="url"
-        id="url-input"
-        placeholder="https://example.com/pointcloud.copc.laz or ept.json"
-        required
-      >
+      <input type="url" id="url-input" placeholder="https://example.com/pointcloud.copc.laz or ept.json" required>
       <button type="submit" id="load-btn">Load</button>
     </form>
 
     <div class="sample-urls">
       <p>Or try a sample dataset:</p>
       <button type="button" data-url="https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz">
-        Autzen Stadium (Oregon)
+        Autzen Stadium (COPC)
       </button>
       <button type="button" data-url="https://data.opengeos.org/madison.copc.laz">
-        Madison (Wisconsin)
+        Madison (COPC)
       </button>
-      <button type="button" data-url="https://data.opengeos.org/USGS_LPC_TX_CoastalRegion_2018_A18_stratmap18-50cm-2995201a1.copc.laz">
-        Texas Coastal Region
+      <button type="button"
+        data-url="https://data.opengeos.org/USGS_LPC_TX_CoastalRegion_2018_A18_stratmap18-50cm-2995201a1.copc.laz">
+        Texas (COPC)
+      </button>
+      <button type="button" data-url="https://data.opengeos.org/chicago.copc.laz">
+        Chicago (COPC)
       </button>
       <button type="button" data-url="https://s3-us-west-2.amazonaws.com/usgs-lidar-public/AL_17Co_1_2020/ept.json">
-        Alabama USGS (EPT)
+        Alabama (EPT)
+      </button>
+      <button type="button"
+        data-url="https://s3-us-west-2.amazonaws.com/usgs-lidar-public/USGS_LPC_IL_4County_Cook_2017_LAS_2019/ept.json">
+        Chicago (EPT)
       </button>
     </div>
 
     <div class="footer-links">
       Powered by
-      <a href="https://github.com/opengeos/maplibre-gl-lidar" target="_blank" rel="noopener noreferrer">maplibre-gl-lidar</a>
+      <a href="https://github.com/opengeos/maplibre-gl-lidar" target="_blank"
+        rel="noopener noreferrer">maplibre-gl-lidar</a>
       &bull;
       <a href="https://github.com/opengeos/lidar-viewer" target="_blank" rel="noopener noreferrer">lidar-viewer</a>
     </div>
@@ -220,4 +231,5 @@
 
   <script type="module" src="/src/main.ts"></script>
 </body>
+
 </html>
