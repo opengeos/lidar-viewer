@@ -2,6 +2,9 @@
 
 A web-based LiDAR point cloud viewer built with [maplibre-gl-lidar](https://github.com/opengeos/maplibre-gl-lidar).
 
+[![Open in CodeSandbox](https://img.shields.io/badge/Open%20in-CodeSandbox-blue?logo=codesandbox)](https://codesandbox.io/p/github/opengeos/lidar-viewer)
+[![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-blue?logo=stackblitz)](https://stackblitz.com/github/opengeos/lidar-viewer)
+
 ## Live Demo
 
 Visit [https://lidar-viewer.gishub.org](https://lidar-viewer.gishub.org)
