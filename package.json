@@ -11,10 +11,11 @@
   "author": "Qiusheng Wu",
   "license": "MIT",
   "dependencies": {
+    "buffer": "^6.0.3",
     "maplibre-gl": "^5.14.0",
-    "maplibre-gl-lidar": "^0.8.2",
+    "maplibre-gl-components": "^0.6.0",
     "maplibre-gl-layer-control": "^0.11.0",
-    "maplibre-gl-components": "^0.6.0"
+    "maplibre-gl-lidar": "^0.8.2"
   },
   "devDependencies": {
     "typescript": "^5.7.0",
