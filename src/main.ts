@@ -1,6 +1,7 @@
 import maplibregl from 'maplibre-gl';
 import { LidarControl, LidarLayerAdapter } from 'maplibre-gl-lidar';
 import { LayerControl } from 'maplibre-gl-layer-control';
+import { TerrainControl } from 'maplibre-gl-components';
 import 'maplibre-gl-lidar/style.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import 'maplibre-gl-layer-control/style.css';
@@ -40,6 +41,7 @@ function initMap(): maplibregl.Map {
   map.addControl(new maplibregl.NavigationControl(), 'top-right');
   map.addControl(new maplibregl.FullscreenControl(), 'top-right');
   map.addControl(new maplibregl.GlobeControl(), 'top-right');
+  map.addControl(new TerrainControl(), 'top-right');
   map.addControl(new maplibregl.ScaleControl(), 'bottom-left');
 
   // Add layer control for basemap layers
@@ -101,7 +103,7 @@ async function loadPointCloud(url: string): Promise<void> {
         mapInstance.on('load', () => resolve());
       });
 
-        // Add Google Satellite basemap
+      // Add Google Satellite basemap
       mapInstance.addSource('google-satellite', {
         type: 'raster',
         tiles: ['https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'],
